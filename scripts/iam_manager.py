@@ -1,3 +1,4 @@
+print("iam_manager: top of file")
 import json
 from typing import Dict, List, Optional
 from botocore.exceptions import ClientError
@@ -20,6 +21,7 @@ class IAMManager:
                 max_attempts = 3
             )
         )
+        print("iam_manager: after class definition")
 
     def _create_assume_role_policy(self, services: List[str]) -> str:
         """Create a trust policy document for the specified AWS services.

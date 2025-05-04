@@ -403,6 +403,15 @@ class S3Manager:
             handle_error(e, "configuring bucket replication")
             return False
 
+    def list_buckets(self):
+        """List all S3 buckets in the account."""
+        try:
+            response = self.s3_client.list_buckets()
+            return response.get('Buckets', [])
+        except Exception as e:
+            handle_error(e, "listing S3 buckets")
+            return []
+
 # Function to use the class
 def setup_s3_storage() -> Optional[Dict[str, str]]:
     """

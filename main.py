@@ -19,7 +19,6 @@ from PyQt5.QtWidgets import QApplication
 
 from scripts.utils import logger, ensure_directory_exists
 from config import settings
-from aws_infra_gui import AWSInfraGUI
 from aws_infra_gui_v2 import AWSInfraGUIV2
 
 
