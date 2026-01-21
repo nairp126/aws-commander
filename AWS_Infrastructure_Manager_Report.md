@@ -272,5 +272,3 @@ The AWS Infrastructure Manager project delivers a powerful, extensible, and user
 - Explore the `scripts/` directory for all AWS integration logic.
 
 ---
-
-If you need this report in a specific format (Markdown, PDF, etc.) or want to include actual screenshots, let me know! 
