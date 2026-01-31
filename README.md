@@ -1,142 +1,114 @@
+<div align="center">
+
 # AWS Infrastructure Manager
 
-A powerful, modern GUI and CLI tool for managing AWS infrastructure components including EC2, S3, Lambda, and IAM resources.
+### Your Local Control Plane for AWS Cloud
+
+![Python](https://img.shields.io/badge/Language-Python_3.x-blue?style=for-the-badge&logo=python)
+![Framework](https://img.shields.io/badge/GUI-PyQt5-green?style=for-the-badge&logo=qt)
+![AWS](https://img.shields.io/badge/Cloud-AWS_Boto3-orange?style=for-the-badge&logo=amazon-aws)
+![License](https://img.shields.io/badge/License-MIT-lightgrey?style=for-the-badge)
+
+</div>
 
 ---
 
-## Project Summary
+## 🚀 About The Project
 
-**AWS Infrastructure Manager** provides a unified, user-friendly interface for managing AWS resources. It supports both graphical and command-line workflows, offers a plugin system for extensibility, and implements best practices for security, error handling, and automation. See the [Project Report](AWS_Infrastructure_Manager_Report.md) for a comprehensive technical and architectural overview.
+**AWS Infrastructure Manager** is a powerful, hybrid Desktop GUI and CLI tool designed to simplify cloud resource operations. It bridges the gap between complex AWS Console navigation and raw script execution, offering a unified control plane for developers and sysadmins.
 
----
+**Key Capabilities:**
 
-## Features
+- **Visual Dashboard**: Monitor EC2, S3, IAM, and Lambda resources in real-time.
+- **One-Click Provisioning**: Deploy standardized infrastructure components instantly.
+- **Automated Lifecycle**: Manage instance states, volume snapshots, and cleanup tasks.
+- **Extensible Plugin System**: Add custom modules without altering the core codebase.
 
-- **Graphical User Interface (GUI)** for easy AWS resource management
-- **Command-Line Interface (CLI)** for automation and scripting
-- **Multi-account & credential management**
-- **Plugin system** for adding new AWS service tabs
-- **Resource monitoring and management** (EC2, S3, Lambda, IAM)
-- **Comprehensive logging and error reporting**
-- **Asynchronous operations** for a responsive experience
-- **Secure credential handling**
-- **Extensible architecture**
+## 🏗️ Architecture
 
----
+The system follows a modular architecture, separating the Presentation Layer (GUI/CLI) from the Logic Layer (Managers).
 
-## Prerequisites
+```mermaid
+graph TD
+    User[User] -->|Interacts with| GUI[PyQt5 Interface]
+    User -->|Executes| CLI[Command Line Interface]
+    
+    subgraph "Application Core"
+        GUI -->|Calls| Main[main.py Entry Point]
+        CLI -->|Calls| Main
+        
+        Main -->|Initializes| Managers[Resource Managers]
+        
+        subgraph "Logic Layer (scripts/)"
+            Managers --> IAM[IAM Manager]
+            Managers --> EC2[EC2 Manager]
+            Managers --> S3[S3 Manager]
+            Managers --> Lambda[Lambda Manager]
+        end
+        
+        Managers -->|Uses| Utils[Utils & Config]
+    end
+    
+    subgraph "External Systems"
+        IAM -->|Boto3 API| AWS[AWS Cloud]
+        EC2 -->|Boto3 API| AWS
+        S3 -->|Boto3 API| AWS
+        Lambda -->|Boto3 API| AWS
+    end
+```
 
-- Python 3.7 or higher
-- AWS CLI configured with appropriate credentials
-- Required Python packages (see requirements.txt)
+## 📂 Project Structure
 
----
+```text
+d:\aws-commander
+├── config/                 # ⚙️ Configuration & Environment Settings
+├── docs/                   # 📚 Detailed System Documentation (Phase 1)
+├── plugins/                # 🧩 Extensible Plugin Modules
+├── scripts/                # 🧠 Core Business Logic & Resource Managers
+├── templates/              # 📝 IaC Templates (e.g., Lambda Functions)
+├── aws_infra_gui_v2.py     # 🖥️ Main GUI Application Entry Point
+└── main.py                 # ⌨️ CLI Entry Point & Orchestrator
+```
 
-## Installation
+## 📦 Module Guide
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/aws_infra_manager.git
-   cd aws_infra_manager
-   ```
-2. **Create and activate a virtual environment:**
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
-3. **Install required packages:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+| Module | Description | Documentation |
+|:---|:---|:---|
+| **`scripts/`** | The "Brain" of the app. Contains `EC2Manager`, `S3Manager`, etc. | [Read the Guide](scripts/README.md) |
+| **`config/`** | Centralized settings, `.env` loading, and validation logic. | [Read the Guide](config/README.md) |
+| **`templates/`** | Source code for cloud-deployed resources (Infrastructure as Code). | [Read the Guide](templates/README.md) |
+| **`plugins/`** | Drop-in folder for extending GUI functionality. | [Read the Guide](plugins/README.md) |
 
----
+## 🏁 Getting Started
 
-## Configuration
+### Prerequisites
 
-1. **Configure your AWS credentials:**
-   - Using AWS CLI: `aws configure`
-   - Or set environment variables:
-     - `AWS_ACCESS_KEY_ID`
-     - `AWS_SECRET_ACCESS_KEY`
-     - `AWS_DEFAULT_REGION`
-2. The application will create necessary directories automatically:
-   - `logs/`
-   - `templates/`
-   - `config/`
-   - `data/`
+- Python 3.8+
+- AWS Credentials configured (via `aws configure` or `.env`)
 
----
+### Installation & Run
 
-## Usage
-
-### GUI Mode
-Run the application with GUI:
 ```bash
+# 1. Clone the repository
+git clone https://github.com/yourusername/aws-commander.git
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Configure Environment
+# Copy example.env to .env and fill in your details
+
+# 4. Run the GUI
 python main.py --gui
-```
 
-### Command Line Mode
-List AWS resources:
-```bash
-python main.py list ec2
-```
-
-Set up AWS resources:
-```bash
+# OR Run via CLI
 python main.py setup all
 ```
 
----
+## 📚 Documentation
 
-## Project Structure
+For a deep dive into the system design, please refer to the **Documentation Series**:
 
-```
-aws_infra_manager/
-├── main.py                 # Main application entry point
-├── aws_infra_gui_v2.py     # Enhanced GUI implementation
-├── requirements.txt        # Python dependencies
-├── config/                 # Configuration files
-├── scripts/                # AWS resource management scripts
-├── templates/              # Template files
-├── logs/                   # Application logs
-├── data/                   # Data storage
-├── plugins/                # Plugin modules for new AWS services
-├── AWS_Infrastructure_Manager_Report.md # Detailed project report
-└── README.md               # This file
-```
-
----
-
-## Project Report
-
-For a detailed technical and architectural overview, see the [AWS Infrastructure Manager Project Report](AWS_Infrastructure_Manager_Report.md).
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-## Acknowledgments
-
-- AWS SDK for Python (boto3)
-- PyQt5 for GUI implementation
-- Matplotlib for data visualization
-
----
-
-## Support
-
-For support, please open an issue in the GitHub repository or contact the maintainers. 
+1. [**Architecture & Tech Stack**](docs/01_ARCHITECTURE.md): Deep dive into the system design and dependencies.
+2. [**Data Model & ERD**](docs/02_DATA_MODEL.md): Visualizing the relationships between EC2, S3, IAM, and Lambda.
+3. [**Key Workflows**](docs/03_WORKFLOWS.md): Step-by-step breakdown of critical user journeys.
